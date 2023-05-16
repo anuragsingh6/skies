@@ -7,8 +7,23 @@ setInterval(()=>{document.getElementById('headerTime').innerText=setElementTime(
 let cimgElement=document.getElementById('cimg');cimgElement.style.background='right no-repeat';
 cimgElement.style.backgroundSize='contain';cimgElement.style.backgroundImage='url(imgs/icon.svg)';
 
-let city="New York, USA";
-let cityElement=document.getElementById('cityName');
+let darkModeButton=document.getElementById('darkModeButton');let mode='light';
+let darkModeElements1e=document.getElementsByClassName('darkModeElement1e');
+let cityInput=document.getElementById('cityInput');
+function darkModeToggle(){
+    if (mode==='light'){mode='dark';darkModeButton.innerText="☀️";darkModeButton.style.backgroundColor='#e1e1e1';
+        for (let i=0;i<darkModeElements1e.length;i++){darkModeElements1e[i].style.backgroundColor='#1e1e1e';darkModeElements1e[i].style.color='white';}
+        cityInput.style.backgroundColor='#1e1e1e';cityInput.style.borderColor='white';cityInput.style.color='white';
+        document.getElementById('tempUnitChangeButton').style.backgroundColor='#1e1e1e';
+    }
+    else {mode='light';darkModeButton.innerText="🌙";darkModeButton.style.backgroundColor='#454545';
+        for (let i=0;i<darkModeElements1e.length;i++){darkModeElements1e[i].style.backgroundColor='white';darkModeElements1e[i].style.color='black';}
+        cityInput.style.backgroundColor='white';cityInput.style.borderColor='black';cityInput.style.color='black';
+        document.getElementById('tempUnitChangeButton').style.backgroundColor='white';
+    }
+}
+
+let city="New York City, USA";let cityElement=document.getElementById('cityName');
 cityElement.innerText=city;
 
 let unit='C';let temp=25;let minTemp=20;let maxTemp=30;

@@ -10,14 +10,16 @@
     <link rel="stylesheet" href="css.css">
 </head>
 <body>
-    <header style="z-index:1000;">
+    <header class="darkModeElement1e" style="z-index:1000;">
         <div class="header-left"><div class="header-left-icon"></div><div style="width:50%;padding-left:2%">Skies</div></div>
-        <div id="headerTime" class="header-right"></div>
+        <div class="header-right"><div id="headerTime"></div>
+            <button id="darkModeButton" type="button" class="dark-mode-button" onclick="darkModeToggle()">🌙</button>
+        </div>
     </header>
-    <div class="page" style="width:100%;z-index:100;">
+    <div class="page darkModeElement1e" style="width:100%;z-index:100;">
         <div class="container city-div" style="padding: 5% 0 2% 0;">
-                <input type="text" id="cityInput" placeholder="Enter Your City">
-                <button id="getWeatherButton">Get Weather</button>
+                <input type="text" id="cityInput" placeholder="Search Your City">
+                <button id="getWeatherButton" type="button">Get Weather</button>
         </div>
         <div class="container" id="cityName"></div>
         <div class="container">
@@ -45,20 +47,31 @@
             </div>
         </div>
         <div class="container">
-            <div id="Precipitation" class="section" style="display:flex;flex-direction:row;">
-                <div style="width:50%;">
-                    <div class="precipitation" style="display:flex;flex-direction:row;">
-                        <div id="prec"></div>
-                        <button id="precUnitChangeButton" type="button" style="margin-left:10%;font-size:inherit;color:grey;background-color:white;border:none;" onclick="changePrecUnit()">in</button>
+            <div id="WeatherConditions" class="section" style="display:flex;flex-direction:row;">
+                <div class="weather-conditions-container">
+                    <div class="weather-condition-element">
+                        <div class="weather-condition-label">Precipitation</div><div class="weather-condition-value"></div>
                     </div>
-                    <div id="preccond" class="condition">No Rain</div>
-                </div>
-                <div style="width:50%;">
-                    <div id="precbar" class="precipitaion-meter" style="height:100%;width:100%;"></div>
+                    <div class="weather-condition-element">
+                        <div class="weather-condition-label">Wind Speed</div><div class="weather-condition-value"></div>
+                    </div>
+                    <div class="weather-condition-element">
+                        <div class="weather-condition-label">UV Index</div><div class="weather-condition-value"></div>
+                    </div>
+                    <div class="weather-condition-element">
+                        <div class="weather-condition-label">AQI</div><div class="weather-condition-value"></div>
+                    </div>
                 </div>
             </div>
             <div id="maxMinTemp" class="section">
                 
+            </div>
+        </div>
+        <div class="container">
+            <div id="Graph" class="section" style="width:75%;">
+                <div class="graph-container">
+                    
+                </div>
             </div>
         </div>
     </div>

@@ -3,30 +3,37 @@ body,header,.header-left,.header-right,.container{height:100%;width:100%;margin:
 header{height:10vh;font-weight:bold;flex-direction:row;box-shadow:0vw -5vw 7vw 0vw #000000;}
 .header-left{float:left;flex-direction:row;align-items:center;justify-content:center;}
 .header-left-icon{height:100%;width:50%;background:right no-repeat;background-size:contain;background-image:url(imgs/icon.svg);}
-.header-right{float:right;}
+.header-right{float:right;flex-direction:row;justify-content:space-evenly;}
 .container{height:100%;width:100%;flex-direction:column;justify-content: space-evenly;}
-.section{height:100%;width:60%;margin:5% 0 5% 0;padding:5%;box-shadow:0vw 0vw 9vw -3vw #000000;border-radius:2vw;}
+.section{height:100%;width:60%;margin:5% 0 5% 0;padding:5%;box-shadow:0vw 2vw 7vw -3vw #000000;border-radius:2vw;}
 .temperature{font-size:2rem;}
 .condition{font-size:1.5rem;margin-top:5%;}
 .max-min-temperature{font-size:1.5rem;}
 .city-div{justify-content: space-evenly;}
-#cityInput{width:45%;padding:2%;font-size:inherit;border:0.1vw solid black;border-radius:2vw;}
-#getWeatherButton{width:45%;margin:5%;padding:2%;font-size:inherit;color:white;background-color:#0059ff;border:none;border-radius:2vw;}
+#cityInput{width:45%;padding:2% 5% 2% 5%;font-size:inherit;border:0.1vw solid black;border-radius:20vw;}
+#getWeatherButton{width:45%;margin:5%;padding:2%;font-size:inherit;color:white;background-color:#0059ff;border:none;border-radius:20vw;}
 #getWeatherButton:hover{background-color:blue;}
 #cityName{margin-top:2%;font-size:1.5rem;}
+.weather-conditions-container{width:100%;}
+.weather-condition-label,.weather-condition-value{font-size:1.2rem;}
+.weather-condition-element{margin:5% 0 5% 0;display:flex;flex-direction:row;align-items:center;justify-content:space-between;}
+#darkModeButton{margin-right:5%;padding:3%;font-size:2.5vw;background-color:#454545;border:none;border-radius:20vw;}
+#darkModeButton:hover{background-color:#1e1e1e;}
 
 @media only screen and (min-width:700px) {
     html{font-size:2vw;}
     .container{flex-direction:row;}
     .section,#cityInput,#getWeatherButton{width:30%;}
-    #cityInput,#getWeatherButton{padding:1%;}
-    #getWeatherButton{margin:0;}
+    #cityInput,#getWeatherButton{padding:1% 2% 1% 2%;}
+    #getWeatherButton{margin:0;padding:1%;}
+    #darkModeButton{padding:2%;font-size:2vw;}
 }
 
 @media only screen and (min-width:1000px) {
     html{font-size:1.5vw;}
     .container{flex-direction:row;}
     .section,#cityInput,#getWeatherButton{width:30%;}
-    #cityInput,#getWeatherButton{padding:1%;}
-    #getWeatherButton{margin:0;}
+    #cityInput,#getWeatherButton{padding:1% 2% 1% 2%;}
+    #getWeatherButton{margin:0;padding:1%;}
+    #darkModeButton{padding:2%;font-size:1.5vw;}
 }
