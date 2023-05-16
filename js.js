@@ -7,6 +7,10 @@ setInterval(()=>{document.getElementById('headerTime').innerText=setElementTime(
 let cimgElement=document.getElementById('cimg');cimgElement.style.background='right no-repeat';
 cimgElement.style.backgroundSize='contain';cimgElement.style.backgroundImage='url(imgs/icon.svg)';
 
+let city="New York, USA";
+let cityElement=document.getElementById('cityName');
+cityElement.innerText=city;
+
 let unit='C';let temp=25;let minTemp=20;let maxTemp=30;
 let tempElement=document.getElementById('temp');tempElement.innerHTML=temp+'&deg'+unit;
 let minTempElement=document.getElementById('minTemp');minTempElement.innerHTML=minTemp+'&deg'+unit;
