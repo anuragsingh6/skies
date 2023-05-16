@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An app to know current weather in your area">
+    <title>Skies</title>
+    <link rel="icon" type="image/svg+xml" href="imgs/icon.svg">
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+    <header style="z-index:1000;">
+        <div class="header-left"><div class="header-left-icon"></div><div style="width:50%;padding-left:2%">Skies</div></div>
+        <div id="headerTime" class="header-right"></div>
+    </header>
+    <div class="page" style="width:100%;z-index:100;">
+        <div class="container">
+            <div id="tempSkyCondition" class="section" style="display:flex;flex-direction:row;">
+                <div style="width:50%;">
+                    <div class="temperature" style="display:flex;flex-direction:row;">
+                        <div id="temp"></div>
+                        <button id="tempUnitChangeButton" type="button" style="margin-left:10%;font-size:inherit;color:grey;background-color:white;border:none;" onclick="changeTempUnit()">&deg;F</button>
+                    </div>
+                    <div id="cond" class="condition">Partly Cloudy</div>
+                </div>
+                <div style="width:50%;">
+                    <div id="cimg" class="condition-image" style="height:100%;width:100%;"></div>
+                </div>
+            </div>
+            <div id="maxMinTemp" class="section">
+                <div class="max-min-temperature" style="height:100%;width:50%;float:left;display:flex;flex-direction:column;">
+                    <div style="color:grey;font-size:1.2rem;">Minimum Temperature</div>
+                    <div id="minTemp" style="padding:5% 0 2% 0;"></div>
+                </div>
+                <div class="max-min-temperature" style="height:100%;width:50%;float:right;display:flex;flex-direction:column;">
+                    <div style="color:grey;font-size:1.2rem;">Maximum Temperature</div>
+                    <div id="maxTemp" style="padding:5% 0 2% 0;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div id="Precipitation" class="section" style="display:flex;flex-direction:row;">
+                <div style="width:50%;">
+                    <div class="precipitation" style="display:flex;flex-direction:row;">
+                        <div id="prec"></div>
+                        <button id="precUnitChangeButton" type="button" style="margin-left:10%;font-size:inherit;color:grey;background-color:white;border:none;" onclick="changePrecUnit()">in</button>
+                    </div>
+                    <div id="preccond" class="condition">No Rain</div>
+                </div>
+                <div style="width:50%;">
+                    <div id="precbar" class="precipitaion-meter" style="height:100%;width:100%;"></div>
+                </div>
+            </div>
+            <div id="maxMinTemp" class="section">
+                
+            </div>
+        </div>
+    </div>
+
+
+
+    <script type="text/javascript" src="js.js"></script>
+</body>
+</html>
