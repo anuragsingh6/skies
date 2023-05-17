@@ -13,6 +13,7 @@ let cityInput=document.getElementById('cityInput');
 function darkModeToggle(){
     if (mode==='light'){mode='dark';darkModeButton.innerText="☀️";darkModeButton.style.backgroundColor='#e1e1e1';
         for (let i=0;i<darkModeElements1e.length;i++){darkModeElements1e[i].style.backgroundColor='#1e1e1e';darkModeElements1e[i].style.color='white';}
+        document.getElementById('header').style.backgroundColor='#1f1f1f';
         cityInput.style.backgroundColor='#1e1e1e';cityInput.style.borderColor='white';cityInput.style.color='white';
         document.getElementById('tempUnitChangeButton').style.backgroundColor='#1e1e1e';
     }
