@@ -23,6 +23,12 @@ function darkModeToggle(){
         document.getElementById('tempUnitChangeButton').style.backgroundColor='white';
     }
 }
+function searchLocation(){
+    let query=cityInput.value;let searchURL='https://photon.komoot.io/api/?q='+query+'&layer=city';
+    fetch(searchURL).then((response)=>{console.log(response.json(), response.json().PromiseResult)})
+}
+cityInput.addEventListener('keyup',searchLocation);
+
 
 let city="New York City, USA";let cityElement=document.getElementById('cityName');
 cityElement.innerText=city;
