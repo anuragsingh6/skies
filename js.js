@@ -24,21 +24,23 @@ function darkModeToggle(){
         document.getElementById('tempUnitChangeButton').style.backgroundColor='white';
     }
 }
+let longitude; let latitude;
 let possibleLocations=[];
 function searchLocation(){
-    let query=cityInput.value;let searchURL='https://photon.komoot.io/api/?q='+query+'&layer=city&limit=10';
+    let query=cityInput.value;//let searchURL='https://photon.komoot.io/api/?q='+query+'&layer=city&limit=10';
+    let searchURL='https://photon.komoot.io/api/?q='+query+'&limit=10';possibleLocations=[];
     openLocationOptionsDialog();
-    fetch(searchURL).then((response)=>response.json()).then((result)=>{return result.features;}).then((f)=>{possibleLocations=f;console.log(cityInput.value, possibleLocations)
+    fetch(searchURL).then((response)=>response.json()).then((result)=>{return result.features;}).then((f)=>{possibleLocations=f;//console.log(cityInput.value, possibleLocations);
         otherLocationOptions.innerHTML='';
         showElement(defaultLocationOptionItem);showElement(otherLocationOptions);
         for (let i=0;i<possibleLocations.length;i++){
             let newLocationOptionItem=document.createElement('div');
             let newLocationOptionItemText='';
-            if (!(possibleLocations[i].properties.hasOwnProperty('county'))&&!(possibleLocations[i].properties.hasOwnProperty('state'))){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.country;}
-            else if ((possibleLocations[i].properties.county===undefined)){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.state+', '+possibleLocations[i].properties.country;}
-            else if ((possibleLocations[i].properties.state===undefined)){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.county+', '+possibleLocations[i].properties.country;}
-            else{newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.county+', '+possibleLocations[i].properties.state+', '+possibleLocations[i].properties.country;}
-            newLocationOptionItem.className='locationOptionItem';newLocationOptionItem.innerText=newLocationOptionItemText;
+            if (!(possibleLocations[i].properties.hasOwnProperty('county'))&&!(possibleLocations[i].properties.hasOwnProperty('state'))){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.type.replace(possibleLocations[i].properties.type.charAt(0),possibleLocations[i].properties.type.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.country;}
+            else if ((possibleLocations[i].properties.county===undefined)){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.type.replace(possibleLocations[i].properties.type.charAt(0),possibleLocations[i].properties.type.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.state+', '+possibleLocations[i].properties.country;}
+            else if ((possibleLocations[i].properties.state===undefined)){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.type.replace(possibleLocations[i].properties.type.charAt(0),possibleLocations[i].properties.type.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.county+', '+possibleLocations[i].properties.country;}
+            else{newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.type.replace(possibleLocations[i].properties.type.charAt(0),possibleLocations[i].properties.type.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.county+', '+possibleLocations[i].properties.state+', '+possibleLocations[i].properties.country;}
+            newLocationOptionItem.className='locationOptionItem';newLocationOptionItem.id='locationOptionItem'+i;newLocationOptionItem.innerText=newLocationOptionItemText;
             newLocationOptionItem.addEventListener('click', locationItemClicked);otherLocationOptions.appendChild(newLocationOptionItem);
             }
         if ((cityInput.value!=='')&&(possibleLocations.length===0)){defaultLocationOptionItem.innerText='Not Found';}
@@ -49,12 +51,17 @@ function searchLocation(){
 }
 cityInput.addEventListener('keyup',searchLocation);
 
-function locationItemClicked(){console.log(this.innerText);if (this.innerText!==undefined){cityInput.value=this.innerText;}}
+function locationItemClicked(){console.log(this.innerText);
+    if (this.innerText!==undefined){cityInput.value=this.innerText;};
+    longitude=possibleLocations[this.id.charAt(18)].geometry.coordinates[0];
+    latitude=possibleLocations[this.id.charAt(18)].geometry.coordinates[1];
+    console.log(this.id, latitude,longitude);
+    city=this.innerText;
+}
 
 function hideElement(element){element.style.visibility='hidden';element.style.display='none';}
 function showElement(element, DISPLAY='block'){element.style.visibility='visible';element.style.display=DISPLAY;}
 
-let getWeatherButton=document.getElementById('getWeatherButton');
 let locationOptions=document.getElementById('locationOptions');
 let otherLocationOptions=document.getElementById('otherLocationOptions');
 let defaultLocationOptionItem=document.getElementById('defaultLocationOptionItem');
@@ -63,15 +70,24 @@ function openLocationOptionsDialog(){showElement(locationOptions);showElement(de
     else{defaultLocationOptionItem.innerText='Loading...';}
     // else if ((cityInput.value!=='')&&(possibleLocations.length===0)){defaultLocationOptionItem.innerText='Loading...';}
 }
-cityInput.addEventListener('focus',()=>{console.log('cityInput gets focus', possibleLocations);searchLocation();});
-cityInput.addEventListener('keyup',()=>{console.log('cityInput typed', possibleLocations);searchLocation();});
-cityInput.addEventListener('focusout',()=>{locationItemClicked();console.log('cityInput loses focus', possibleLocations);});
+cityInput.addEventListener('focus',()=>{searchLocation();});
+cityInput.addEventListener('keyup',()=>{searchLocation();});
+cityInput.addEventListener('focusout',()=>{locationItemClicked();});
 
 addEventListener('click', e=>{if ((e.target!==cityInput)){hideElement(locationOptions)}else{showElement(locationOptions)}})
 
+let getWeatherButton=document.getElementById('getWeatherButton');let weather;
+async function getWeather(){
+    let weatherURL='https://api.open-meteo.com/v1/forecast?latitude='+latitude+'&longitude='+longitude+'&hourly=temperature_2m,precipitation,windspeed_80m&daily=temperature_2m_max,temperature_2m_min,uv_index_max&forecast_days=1&timezone=auto';
+    const response=await fetch(weatherURL);
+    const weather=await response.json();
 
-let city="New York City, USA";let cityElement=document.getElementById('cityName');
-cityElement.innerText=city;
+    console.log(weather);cityName.innerText=city;
+}
+
+
+let city="New York City, USA";let cityName=document.getElementById('cityName');
+cityName.innerText=city;
 
 let unit='C';let temp=25;let minTemp=20;let maxTemp=30;
 let tempElement=document.getElementById('temp');tempElement.innerHTML=temp+'&deg'+unit;
