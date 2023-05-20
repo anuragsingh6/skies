@@ -24,6 +24,7 @@ header{height:10vh;font-weight:bold;flex-direction:row;box-shadow:0vw -5vw 7vw 0
 .locationOptionItem:hover{background-color:#66666650;}
 .cityInput-locationOptions-complex{width:45%;}
 .darkModeEnable{color:white;background-color:#1e1e1e;}
+#defaultLocationOptionItem{padding:3% 2% 3% 2%;border-radius:2vw;}
 
 @media only screen and (min-width:700px) {
     html{font-size:2vw;}

@@ -28,44 +28,46 @@ let possibleLocations=[];
 function searchLocation(){
     let query=cityInput.value;let searchURL='https://photon.komoot.io/api/?q='+query+'&layer=city&limit=10';
     openLocationOptionsDialog();
-    fetch(searchURL).then((response)=>response.json()).then((result)=>{return result.features;}).then((f)=>{possibleLocations=f;console.log(possibleLocations)
-        locationOptions.innerHTML='';
+    fetch(searchURL).then((response)=>response.json()).then((result)=>{return result.features;}).then((f)=>{possibleLocations=f;console.log(cityInput.value, possibleLocations)
+        otherLocationOptions.innerHTML='';
+        showElement(defaultLocationOptionItem);showElement(otherLocationOptions);
         for (let i=0;i<possibleLocations.length;i++){
             let newLocationOptionItem=document.createElement('div');
             let newLocationOptionItemText='';
-            if (possibleLocations[i].county===undefined){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value+', '+possibleLocations[i].properties.state+', '+possibleLocations[i].properties.country;}
-            else{newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value+', '+possibleLocations[i].properties.county+', '+possibleLocations[i].properties.state+', '+possibleLocations[i].properties.country;}
+            if (!(possibleLocations[i].properties.hasOwnProperty('county'))&&!(possibleLocations[i].properties.hasOwnProperty('state'))){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.country;}
+            else if ((possibleLocations[i].properties.county===undefined)){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.state+', '+possibleLocations[i].properties.country;}
+            else if ((possibleLocations[i].properties.state===undefined)){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.county+', '+possibleLocations[i].properties.country;}
+            else{newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.county+', '+possibleLocations[i].properties.state+', '+possibleLocations[i].properties.country;}
             newLocationOptionItem.className='locationOptionItem';newLocationOptionItem.innerText=newLocationOptionItemText;
-            newLocationOptionItem.addEventListener('click', locationItemClicked);locationOptions.appendChild(newLocationOptionItem);
+            newLocationOptionItem.addEventListener('click', locationItemClicked);otherLocationOptions.appendChild(newLocationOptionItem);
             }
-        if (possibleLocations.length===0){defaultLocationOptionItem.style.display='block';defaultLocationOptionItem.style.visibility='visible';defaultLocationOptionItem.innerText='Not Found';console.log('Not Found');}
-        else{defaultLocationOptionItem.style.display='none';defaultLocationOptionItem.style.visibility='hidden';defaultLocationOptionItem.innerText='Loading';console.log('Loading...');}
+        if ((cityInput.value!=='')&&(possibleLocations.length===0)){defaultLocationOptionItem.innerText='Not Found';}
+        else if (possibleLocations.length!==0){hideElement(defaultLocationOptionItem);}
         })
-    .catch((error)=>console.error('Error: Could not get data:',error))
+    .catch((error)=>console.error('Error: Could not load data:',error))
     
 }
 cityInput.addEventListener('keyup',searchLocation);
 
+function locationItemClicked(){console.log(this.innerText);if (this.innerText!==undefined){cityInput.value=this.innerText;}}
 
-function locationItemClicked(){
-    console.log(this.innerText);cityInput.value=this.innerText;
-}
-let locationItemElements=document.getElementsByClassName('locationOptionItem');
+function hideElement(element){element.style.visibility='hidden';element.style.display='none';}
+function showElement(element, DISPLAY='block'){element.style.visibility='visible';element.style.display=DISPLAY;}
 
 let getWeatherButton=document.getElementById('getWeatherButton');
 let locationOptions=document.getElementById('locationOptions');
+let otherLocationOptions=document.getElementById('otherLocationOptions');
 let defaultLocationOptionItem=document.getElementById('defaultLocationOptionItem');
-function openLocationOptionsDialog(){
-    if (cityInput.value!==''){locationOptions.style.display='flex';locationOptions.style.visibility='visible';
-    defaultLocationOptionItem.style.display='block';defaultLocationOptionItem.style.visibility='visible';}
-    else{locationOptions.style.display='none';locationOptions.style.visibility='hidden';
-    defaultLocationOptionItem.style.display='none';defaultLocationOptionItem.style.visibility='hidden';}
+function openLocationOptionsDialog(){showElement(locationOptions);showElement(defaultLocationOptionItem);
+    if (cityInput.value===''){defaultLocationOptionItem.innerText='Start typing to search for locations';}
+    else{defaultLocationOptionItem.innerText='Loading...';}
+    // else if ((cityInput.value!=='')&&(possibleLocations.length===0)){defaultLocationOptionItem.innerText='Loading...';}
 }
+cityInput.addEventListener('focus',()=>{console.log('cityInput gets focus', possibleLocations);searchLocation();});
+cityInput.addEventListener('keyup',()=>{console.log('cityInput typed', possibleLocations);searchLocation();});
+cityInput.addEventListener('focusout',()=>{locationItemClicked();console.log('cityInput loses focus', possibleLocations);});
 
-addEventListener('click', e=>{//console.log(e.target);
-    if (!(e.target===locationOptions)){console.log('adsa');locationOptions.style.display='none';locationOptions.style.visibility='hidden';}
-    else{console.log('aksd');}
-})
+addEventListener('click', e=>{if ((e.target!==cityInput)){hideElement(locationOptions)}else{showElement(locationOptions)}})
 
 
 let city="New York City, USA";let cityElement=document.getElementById('cityName');
