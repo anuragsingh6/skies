@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="An app to know current weather in your area">
     <title>Skies</title>
-    <link rel="icon" type="image/svg+xml" href="imgs/icon.svg">
+    <link rel="icon" type="image/svg+xml" href="images/icon.svg">
     <link rel="stylesheet" href="css.css">
 </head>
 <body>
@@ -19,23 +19,23 @@
     <div class="page darkModeElement" style="width:100%;">
         <div class="container city-div" style="padding: 5% 0 2% 0;">
             <div class="cityInput-locationOptions-complex">
-                <input type="text" id="cityInput" class="darkModeElement" placeholder="Search Your City">
+                <input type="text" id="cityInput" class="darkModeElement" placeholder="Search For Your Location">
                 <div  id="locationOptions" class="darkModeElement" style="display:none;visibility:hidden;">
                     <div id="defaultLocationOptionItem" class="darkModeElement" style="display:none;visibility:hidden;">Loading...</div>
                     <div id="otherLocationOptions" class="darkModeElement" style="display:none;visibility:hidden;"></div>
                 </div>
             </div>
-            <button id="getWeatherButton" type="button" onclick="getWeather()">Get Weather</button>
+            <button id="getWeatherButton" type="button" onclick="getWeatherButtonClick()">Get Weather</button>
         </div>
-        <div class="container" id="cityName"></div>
+        <div class="container"><span id="cityName"></span></div>
         <div class="container">
             <div id="tempSkyCondition" class="section" style="display:flex;flex-direction:row;">
                 <div style="width:50%;">
                     <div class="temperature" style="display:flex;flex-direction:row;">
                         <div id="temp"></div>
-                        <button id="tempUnitChangeButton" type="button" style="margin-left:10%;font-size:inherit;color:grey;background-color:white;border:none;" onclick="changeTempUnit()">&deg;F</button>
+                        <button id="tempUnitChangeButton" type="button" style="margin-left:10%;font-size:inherit;color:grey;background-color:transparent;border:none;z-index:1;" onclick="changeTempUnit()">&deg;F</button>
                     </div>
-                    <div id="cond" class="condition">Partly Cloudy</div>
+                    <div id="condition" class="condition">Loading...</div>
                 </div>
                 <div style="width:50%;">
                     <div id="cimg" class="condition-image" style="height:100%;width:100%;"></div>
@@ -56,16 +56,28 @@
             <div id="WeatherConditions" class="section" style="display:flex;flex-direction:row;">
                 <div class="weather-conditions-container">
                     <div class="weather-condition-element">
-                        <div class="weather-condition-label">Precipitation</div><div class="weather-condition-value"></div>
+                        <div class="weather-condition-label"><b>Precipitation</b></div><div id="prec" class="weather-condition-value"></div>
+                    </div>
+                    <div class="weather-condition-element" style="padding:0% 5% 0% 5%;">
+                        <div class="weather-condition-label">Rain</div><div id="rain" class="weather-condition-value"></div>
+                    </div>
+                    <div class="weather-condition-element" style="padding:0% 5% 0% 5%;">
+                        <div class="weather-condition-label">Snow</div><div id="snow" class="weather-condition-value"></div>
                     </div>
                     <div class="weather-condition-element">
-                        <div class="weather-condition-label">Wind Speed</div><div class="weather-condition-value"></div>
+                        <div class="weather-condition-label"><b>Wind Speed</b></div><div id="wind" class="weather-condition-value"></div>
                     </div>
                     <div class="weather-condition-element">
-                        <div class="weather-condition-label">UV Index</div><div class="weather-condition-value"></div>
+                        <div class="weather-condition-label"><b>Visibility</b></div><div id="visibility" class="weather-condition-value"></div>
                     </div>
                     <div class="weather-condition-element">
-                        <div class="weather-condition-label">AQI</div><div class="weather-condition-value"></div>
+                        <div class="weather-condition-label"><b>Clouds</b></div><div id="cloud" class="weather-condition-value"></div>
+                    </div>
+                    <div class="weather-condition-element">
+                        <div class="weather-condition-label"><b>UV Index</b></div><div id="uvin" class="weather-condition-value"></div>
+                    </div>
+                    <div class="weather-condition-element">
+                        <div class="weather-condition-label"><b>AQI</b></div><div id="aqi" class="weather-condition-value"></div>
                     </div>
                 </div>
             </div>
