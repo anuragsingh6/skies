@@ -30,7 +30,7 @@
         <div class="container">
             <div class="cityNameContainer">
                 <span id="cityName"></span>
-                <button type="button" class="darkModeElement" onclick="getWeather()" style="margin-left:5%;font-size:inherit;background-color:#87878711;border:none;border-radius:20vw;">&#8635;</button>
+                <button type="button" class="darkModeElement" onclick="()=>{getWeather();getAQI();}" style="margin-left:5%;font-size:inherit;background-color:#87878711;border:none;border-radius:20vw;">&#8635;</button>
             </div>
         </div>
         <div class="container">
@@ -86,9 +86,16 @@
                     </div>
                 </div>
             </div>
-            <div id="WeatherTip" class="section">
-                <div id="weatherTipLabel" style="font-weight:bold;">Weather Tip 💡</div>
-                <div id="weatherTipValue" style="padding-top:5%;line-height:1.5;">Loading...</div>
+            <div class="double-section">
+                <div id="WeatherTip" class="section" style="width:80%;margin:10% 0% 10% 0%;padding:10%;">
+                    <div id="weatherTipLabel" style="font-weight:bold;">Weather Tip 💡</div>
+                    <div id="weatherTipValue" style="padding-top:5%;line-height:1.5;">Loading...</div>
+                </div>
+                <div id="MapContainer" class="section" style="width:80%;margin:10% 0% 10% 0%;padding:10%;">
+                    <div id="MapLabel" style="font-weight:bold;">Map</div>
+                    <div id="mapLoading" style="padding-top:5%;line-height:1.5;">Loading...</div>
+                    <div id="map"></div>
+                </div>
             </div>
         </div>
         <div class="container">

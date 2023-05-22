@@ -37,14 +37,14 @@ function searchLocation(){
         showElement(defaultLocationOptionItem);showElement(otherLocationOptions);
         for (let i=0;i<possibleLocations.length;i++){
             let newLocationOptionItem=document.createElement('div');
-            let newLocationOptionItemText='';
-            if (!(possibleLocations[i].properties.hasOwnProperty('county'))&&!(possibleLocations[i].properties.hasOwnProperty('state'))){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.country;}
-            else{
-            if ((possibleLocations[i].properties.hasOwnProperty('county'))&&(possibleLocations[i].properties.hasOwnProperty('state'))){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.state+', '+possibleLocations[i].properties.country;}
-            else if ((possibleLocations[i].properties.county===undefined)){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.city+', '+possibleLocations[i].properties.state+', '+possibleLocations[i].properties.country;}
-            else if ((possibleLocations[i].properties.state===undefined)){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.city+', '+possibleLocations[i].properties.county+', '+possibleLocations[i].properties.country;}
-            else{newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.city+', '+possibleLocations[i].properties.county+', '+possibleLocations[i].properties.state+', '+possibleLocations[i].properties.country;}
-            }
+            let newLocationOptionItemText=placeLabelCreator(possibleLocations[i]);
+            // if (!(possibleLocations[i].properties.hasOwnProperty('county'))&&!(possibleLocations[i].properties.hasOwnProperty('state'))){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.country;}
+            // else{
+            // if ((possibleLocations[i].properties.hasOwnProperty('county'))&&(possibleLocations[i].properties.hasOwnProperty('state'))){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.state+', '+possibleLocations[i].properties.country;}
+            // else if ((possibleLocations[i].properties.county===undefined)){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.city+', '+possibleLocations[i].properties.state+', '+possibleLocations[i].properties.country;}
+            // else if ((possibleLocations[i].properties.state===undefined)){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.city+', '+possibleLocations[i].properties.county+', '+possibleLocations[i].properties.country;}
+            // else{newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.city+', '+possibleLocations[i].properties.county+', '+possibleLocations[i].properties.state+', '+possibleLocations[i].properties.country;}
+            // }
             newLocationOptionItem.className='locationOptionItem';newLocationOptionItem.id='locationOptionItem'+i;newLocationOptionItem.innerText=newLocationOptionItemText;
             newLocationOptionItem.addEventListener('click', locationItemClicked);otherLocationOptions.appendChild(newLocationOptionItem);
             }
@@ -55,6 +55,12 @@ function searchLocation(){
     }
 }
 cityInput.addEventListener('keyup',searchLocation);
+
+function placeLabelCreator(place){
+    let candidates=['name', 'osm_value','city','county','state','country'];let placeLabel='';
+    for (let i=0;i<candidates.length;i++){if (place.properties.hasOwnProperty(candidates[i])){placeLabel+=', '+place.properties[candidates[i]].replace(place.properties[candidates[i]].charAt(0),place.properties[candidates[i]].charAt(0).toUpperCase())}}
+    placeLabel=placeLabel.substring(2);return placeLabel;
+}
 
 function locationItemClicked(){console.log(this.innerText);
     if (this.innerText!==undefined){cityInput.value=this.innerText;};
@@ -105,7 +111,7 @@ async function getWeather(){
         uvin=weather.daily.uv_index_max;
         updateWeather();updateWeatherStatus();console.log('unit:', unit);if (unit==='F'){formatTempInF();};
     }
-    catch{console.error('Error loading weather data. Please try again.');conditionElement.innerText='Error. Try searching for your location.';}
+    catch{console.error('Error loading weather data. Please try again.');conditionElement.innerText='Error. Try searching for your location or reload.';weatherTipValueElement.innerText='Error. Try searching for your location or reload.';}
 }
 
 async function getAQI(){let yyyy=new Date().getFullYear();let mm='0'+(new Date().getMonth()+1);let dd=new Date().getDate();
@@ -119,15 +125,33 @@ async function getAQI(){let yyyy=new Date().getFullYear();let mm='0'+(new Date()
     catch{console.error('Error loading AQI data. Please try again.');}
 }
 
+async function loadMap(){
+    document.getElementById('map').innerHTML='<iframe id="mapFrame" width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=76.78070068359376%2C28.445147699510212%2C77.54699707031251%2C28.830839320444266&amp;layer=mapnik" style="border: 1px solid black"></iframe>';
+}
+
+function editMap(){
+    document.getElementById('mapLoading').style.display='none';
+    let mapFrame=document.getElementById('mapFrame');
+    mapFrame.style.border='none';mapFrame.style.borderRadius='100vw';
+    // if (document.getElementsByClassName('leaflet-control-container').length!==0)
+    let mapDocument=mapFrame.contentDocument || mapFrame.contentWindow.document;
+    // console.log(mapFrame.contentDocument || mapFrame.contentWindow.document);
+    mapDocument.getElementsByClassName('leaflet-control-container')[0].remove();
+    console.log('editMap called');
+}
+
 getWeather();
 getAQI();
+loadMap();
+
+window.onload = () => {editMap();};
+
 
 let city='New Delhi City, Delhi, India';
 let cityName=document.getElementById('cityName');cityName.innerText=city;
 
 let unit='C';
 let temp=0;let minTemp=0;let maxTemp=0;let prec=0;let rain=0;let snow=0;let wind=0;let visibility=0;let cloud=0;let uvin=0;let aqi=0;let aqiCondition='';
-// let temp='...';let minTemp='...';let maxTemp='...';let prec='...';let rain='...';let snow='...';let wind='...';let cloud='...';let uvin='...';let aqi='...';
 let conditionImages={'Sunny':'url(images/sunny.svg)','Partly Cloudy':'url(images/icon.svg)','Cloudy':'url(images/cloudy.svg)','Rain':'url(images/rain.svg)','Snow':'url(images/snow.svg)','Windy':'url(images/windy.svg)','Clear Night':'url(images/night_clear.svg)','Partly Cloudy Night':'url(images/night_partly_cloudy.svg)','Thunder':'url(images/thunder.svg)'};
 let conditionImage=conditionImages['Partly Cloudy'];
 let weatherCondition='';let weatherTip='';
@@ -221,7 +245,7 @@ function updateWeatherStatus(){
         case 95:
         case 96:
         case 97:
-            weatherCondition='Thunderstorm';conditionImage=conditionImages['Thunderstorm'];
+            weatherCondition='Thunderstorm';conditionImage=conditionImages['Thunder'];
             break;
         default:
             if (wind>15){weatherCondition='Windy';conditionImage=conditionImages['Windy'];}
@@ -246,6 +270,7 @@ function updateWeatherStatus(){
             break;
         default:
             if (uvin>5){weatherTip='High UV index, use sunscreen.'}
+            else if (aqi>60){weatherTip='Bad air quality, use masks when going outside and air filters inside. Stay inside if possible.'}
             else{weatherTip='Good weather outside, enjoy!'};
             break;
     }
