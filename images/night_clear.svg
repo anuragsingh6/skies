@@ -45,7 +45,7 @@
        y1="41.931072"
        x2="109.4472"
        y2="24.519016"
-       gradientTransform="translate(-19.599122,130.6483)" />
+       gradientTransform="matrix(1.5,0,0,1.5,-69.250229,113.68015)" />
     <linearGradient
        inkscape:collect="always"
        id="linearGradient630">
@@ -66,7 +66,7 @@
      transform="translate(-46.842556,-134.17766)">
     <path
        id="path570-4"
-       style="fill:url(#linearGradient716);fill-opacity:1;stroke:none;stroke-width:0.0661458;stroke-linecap:round;stroke-linejoin:round;paint-order:fill markers stroke"
-       d="M 88.334597 151.88459 A 16.668749 16.668749 0 0 1 89.750015 158.60408 A 16.668749 16.668749 0 0 1 73.081265 175.27283 A 16.668749 16.668749 0 0 1 64.886416 173.11327 A 16.668749 16.668749 0 0 0 80.12838 183.06202 A 16.668749 16.668749 0 0 0 96.79713 166.39326 A 16.668749 16.668749 0 0 0 88.334597 151.88459 z " />
+       style="fill:url(#linearGradient716);fill-opacity:1;stroke:none;stroke-width:0.0992187;stroke-linecap:round;stroke-linejoin:round;paint-order:fill markers stroke"
+       d="m 92.650352,145.53458 a 25.003123,25.003123 0 0 1 2.123108,10.07924 25.003123,25.003123 0 0 1 -25.003109,25.00312 25.003123,25.003123 0 0 1 -12.292273,-3.23934 25.003123,25.003123 0 0 0 22.862946,14.92312 25.003123,25.003123 0 0 0 25.003086,-25.00314 25.003123,25.003123 0 0 0 -12.693758,-21.763 z" />
   </g>
 </svg>

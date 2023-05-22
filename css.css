@@ -13,9 +13,9 @@ header{height:10vh;font-weight:bold;flex-direction:row;box-shadow:0vw -5vw 7vw 0
 #cityInput{width:90%;padding:3% 5% 3% 5%;font-size:inherit;border:0.1vw solid black;border-radius:20vw;}
 #getWeatherButton{width:45%;margin:5%;padding:2%;font-size:inherit;color:white;background-color:#0059ff;border:none;border-radius:20vw;}
 #getWeatherButton:hover{background-color:blue;}
-#cityName{margin:2% 5% 0% 5%;font-size:1.5rem;}
+.cityNameContainer{margin:2% 5% 0% 5%;font-size:1.5rem;display:flex;flex:auto;align-items:center;justify-content:center;}
 .weather-conditions-container{width:100%;}
-.weather-condition-label,.weather-condition-value{font-size:1.2rem;}
+.weather-condition-label,.weather-condition-value,#weatherTipLabel{font-size:1.2rem;}
 .weather-condition-element{margin:5% 0 5% 0;display:flex;flex-direction:row;align-items:center;justify-content:space-between;}
 #darkModeButton{margin-right:5%;padding:3%;font-size:2.5vw;background-color:#454545;border:none;border-radius:20vw;}
 #darkModeButton:hover{background-color:#1e1e1e;}

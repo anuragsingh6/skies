@@ -27,7 +27,12 @@
             </div>
             <button id="getWeatherButton" type="button" onclick="getWeatherButtonClick()">Get Weather</button>
         </div>
-        <div class="container"><span id="cityName"></span></div>
+        <div class="container">
+            <div class="cityNameContainer">
+                <span id="cityName"></span>
+                <button type="button" class="darkModeElement" onclick="getWeather()" style="margin-left:5%;font-size:inherit;background-color:#87878711;border:none;border-radius:20vw;">&#8635;</button>
+            </div>
+        </div>
         <div class="container">
             <div id="tempSkyCondition" class="section" style="display:flex;flex-direction:row;">
                 <div style="width:50%;">
@@ -77,12 +82,13 @@
                         <div class="weather-condition-label"><b>UV Index</b></div><div id="uvin" class="weather-condition-value"></div>
                     </div>
                     <div class="weather-condition-element">
-                        <div class="weather-condition-label"><b>AQI</b></div><div id="aqi" class="weather-condition-value"></div>
+                        <div class="weather-condition-label"><b>AQI</b></div><div id="aqiColor" style="width:20%;height:3vh;"></div><div id="aqi" class="weather-condition-value"></div>
                     </div>
                 </div>
             </div>
-            <div id="maxMinTemp" class="section">
-                
+            <div id="WeatherTip" class="section">
+                <div id="weatherTipLabel" style="font-weight:bold;">Weather Tip 💡</div>
+                <div id="weatherTipValue" style="padding-top:5%;line-height:1.5;">Loading...</div>
             </div>
         </div>
         <div class="container">

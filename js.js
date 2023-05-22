@@ -91,7 +91,8 @@ async function getWeather(){
         weather=await response.json();
 
         console.log('WEATHER DATA:', weather);cityName.innerText=city;
-        temp=weather.hourly.temperature_2m[new Date().getHours()].toFixed(1);
+        // temp=weather.hourly.temperature_2m[new Date().getHours()].toFixed(1);
+        temp=weather.current_weather.temperature;
         minTemp=weather.daily.temperature_2m_min[0].toFixed(1);
         maxTemp=weather.daily.temperature_2m_max[0].toFixed(1);
         prec=weather.hourly.precipitation[new Date().getHours()].toFixed(1);
@@ -99,7 +100,8 @@ async function getWeather(){
         snow=weather.hourly.snowfall[new Date().getHours()].toFixed(1);
         visibility=(weather.hourly.visibility[new Date().getHours()]/1000).toFixed(1);
         cloud=weather.hourly.cloudcover[new Date().getHours()].toFixed(1);
-        wind=weather.hourly.windspeed_80m[new Date().getHours()].toFixed(1);
+        // wind=weather.hourly.windspeed_80m[new Date().getHours()].toFixed(1);
+        wind=weather.current_weather.windspeed;
         uvin=weather.daily.uv_index_max;
         updateWeather();updateWeatherStatus();console.log('unit:', unit);if (unit==='F'){formatTempInF();};
     }
@@ -110,9 +112,9 @@ async function getAQI(){let yyyy=new Date().getFullYear();let mm='0'+(new Date()
     let aqiURL='https://air-quality-api.open-meteo.com/v1/air-quality?latitude='+latitude+'&longitude='+longitude+'&hourly=european_aqi&start_date='+yyyy+'-'+mm+'-'+dd+'&end_date='+yyyy+'-'+mm+'-'+dd;
     try{
         let aqiString=await fetch(aqiURL);let aqiData=await aqiString.json();console.log('AQI DATA:', aqiData);
-        aqi=aqiData.hourly.european_aqi[new Date().getHours()].toFixed(1);
-        if (aqi<=20){aqiCondition='Good';}else if (aqi<=40){aqiCondition='Fair';}else if (aqi<=60){aqiCondition='Moderate';}else if (aqi<=80){aqiCondition='Poor';}if (aqi<=100){aqiCondition='Very Poor';}else{aqiCondition='Extremely Poor';}
-        aqiElement.innerHTML=aqi+'/100.0'+'<div>'+aqiCondition+'</div>';
+        aqi=Number(aqiData.hourly.european_aqi[new Date().getHours()].toFixed(1));
+        if (aqi<=20){aqiCondition='Good';aqiColor='Green';}else if (aqi<=40){aqiCondition='Fair';aqiColor='Yellow';}else if (aqi<=60){aqiCondition='Moderate';aqiColor='Orange';}else if (aqi<=80){aqiCondition='Poor';aqiColor='Red';}else if (aqi<=100){aqiCondition='Very Poor';aqiColor='Maroon';}else{aqiCondition='Extremely Poor';aqiColor='Black';}
+        aqiElement.innerHTML=aqi+'/100.0'+'<div>'+aqiCondition+'</div>';aqiColorElement.style.backgroundColor=aqiColor;
     }
     catch{console.error('Error loading AQI data. Please try again.');}
 }
@@ -126,10 +128,10 @@ let cityName=document.getElementById('cityName');cityName.innerText=city;
 let unit='C';
 let temp=0;let minTemp=0;let maxTemp=0;let prec=0;let rain=0;let snow=0;let wind=0;let visibility=0;let cloud=0;let uvin=0;let aqi=0;let aqiCondition='';
 // let temp='...';let minTemp='...';let maxTemp='...';let prec='...';let rain='...';let snow='...';let wind='...';let cloud='...';let uvin='...';let aqi='...';
-let conditionImages={'Sunny':'url(images/sunny.svg)','Partly Cloudy':'url(images/icon.svg)','Cloudy':'url(images/cloudy.svg)','Rain':'url(images/rain.svg)','Snow':'url(images/snow.svg)','Windy':'url(images/windy.svg)'};
+let conditionImages={'Sunny':'url(images/sunny.svg)','Partly Cloudy':'url(images/icon.svg)','Cloudy':'url(images/cloudy.svg)','Rain':'url(images/rain.svg)','Snow':'url(images/snow.svg)','Windy':'url(images/windy.svg)','Clear Night':'url(images/night_clear.svg)','Partly Cloudy Night':'url(images/night_partly_cloudy.svg)','Thunder':'url(images/thunder.svg)'};
 let conditionImage=conditionImages['Partly Cloudy'];
+let weatherCondition='';let weatherTip='';
 let tempElement=document.getElementById('temp');
-
 let conditionElement=document.getElementById('condition');
 let minTempElement=document.getElementById('minTemp');
 let maxTempElement=document.getElementById('maxTemp');
@@ -137,6 +139,8 @@ let precElement=document.getElementById('prec');let rainElement=document.getElem
 let snowElement=document.getElementById('snow');let windElement=document.getElementById('wind');
 let visibilityElement=document.getElementById('visibility');let cloudElement=document.getElementById('cloud');
 let uvinElement=document.getElementById('uvin');let aqiElement=document.getElementById('aqi');
+let aqiColorElement=document.getElementById('aqiColor');let aqiColor='transparent';
+let weatherTipValueElement=document.getElementById('weatherTipValue');
 
 updateWeather();
 
@@ -166,52 +170,87 @@ function updateWeather(){
     precElement.innerHTML=prec+' mm<div>'+(prec/25.4).toFixed(1)+' in</div>';rainElement.innerHTML=rain+' mm<div>'+(rain/25.4).toFixed(1)+' in</div>';snowElement.innerHTML=snow+' cm<div>'+(snow/2.54).toFixed(1)+' in</div>';
     windElement.innerHTML=wind+' km/h<div>'+(wind/1.609).toFixed(1)+' miles/h</div>';cloudElement.innerHTML=cloud+'%';
     visibilityElement.innerHTML=visibility+' km<div>'+(visibility/1.609).toFixed(1)+' miles</div>';uvinElement.innerHTML=uvin;
-    aqiElement.innerHTML=aqi+'/100.0'+'<div>'+aqiCondition+'</div>';
-    updateWeatherStatus();
+    aqiElement.innerHTML=aqi+'/100.0'+'<div>'+aqiCondition+'</div>';aqiColorElement.style.backgroundColor=aqiColor;
 }
 
 function updateWeatherStatus(){
-    if (prec!==0){
-        if (Number(snow)!==0){conditionElement.innerText='Snow';conditionImage=conditionImages['Snow'];}
-        else{
-            if (Number(rain)!==0){conditionElement.innerText='Rain';conditionImage=conditionImages['Rain'];}
-            else{
-                if ((Number(cloud)!==0)||(Number(cloud)<50)){conditionElement.innerText='Partly Cloudy';conditionImage=conditionImages['Partly Cloudy'];}
-                else{conditionElement.innerText='Partly Cloudy';conditionImage=conditionImages['Partly Cloudy'];}
-            }
-        }
-    }
-    else{
-        conditionElement.innerText='Sunny';conditionImage=conditionImages['Sunny'];
+    switch (weather.current_weather.weathercode) {
+        case 0:
+        case 1:
+            if (weather.current_weather.is_day===1){weatherCondition='Sunny';conditionImage=conditionImages['Sunny'];}
+            else{weatherCondition='Clear Sky';conditionImage=conditionImages['Clear Night'];}
+            break;
+        case 2:
+            if (weather.current_weather.is_day===1){weatherCondition='Partly Cloudy';conditionImage=conditionImages['Partly Cloudy'];}
+            else{weatherCondition='Partly Cloudy';conditionImage=conditionImages['Partly Cloudy Night'];}
+            break;
+        case 3:
+            weatherCondition='Cloudy';conditionImage=conditionImages['Cloudy'];
+            break;
+        case 45:
+        case 48:
+            weatherCondition='Fog';conditionImage=conditionImages['Cloudy'];
+            break;
+        case 51:
+        case 53:
+        case 55:
+        case 56:
+        case 57:
+            weatherCondition='Rain (Drizzle)';conditionImage=conditionImages['Rain'];
+            break;
+        case 61:
+        case 63:
+        case 65:
+        case 66:
+        case 67:
+            weatherCondition='Rain';conditionImage=conditionImages['Rain'];
+            break;
+        case 80:
+        case 81:
+        case 82:
+            weatherCondition='Rain (Showers)';conditionImage=conditionImages['Rain'];
+            break;
+        case 71:
+        case 73:
+        case 75:
+        case 77:
+        case 85:
+        case 86:
+            weatherCondition='Snow';conditionImage=conditionImages['Snow'];
+            break;
+        case 95:
+        case 96:
+        case 97:
+            weatherCondition='Thunderstorm';conditionImage=conditionImages['Thunderstorm'];
+            break;
+        default:
+            if (wind>15){weatherCondition='Windy';conditionImage=conditionImages['Windy'];}
+            break;
     }
 
-    // let weatherCondition='';
-    // if (Number(snow)!==0){weatherCondition='Snow';}
-    // else{
-    //     if (Number(rain)!==0){weatherCondition='Rain';}
-    //     else{
-    //         if ((Number(cloud)!==0)||(Number(cloud)<25)){weatherCondition='Sunny';}
-    //         else{weatherCondition='Cloudy';}
-    //     }
-    // }
-    // conditionImage=conditionImages['Snow'];
-    // switch (0) {
-    //     case snow:
-    //         conditionElement.innerText='Snow';conditionImage=conditionImages['Snow'];
-    //         break;
-    //     case rain:
-    //         conditionElement.innerText='Rain';conditionImage=conditionImages['Rain'];
-    //         break;
-    //     case cloud:
-    //         conditionElement.innerText='Cloudy';conditionImage=conditionImages['Cloudy'];
-    //         break;
-    //     case wind:
-    //         conditionElement.innerText='Windy';conditionImage=conditionImages['Windy'];
-    //         break;
-    //     default:
-    //         conditionElement.innerText='Sunny';conditionImage=conditionImages['Sunny'];
-    //         break;
-    // }
+    switch (weatherCondition) {
+        case 'Snow':
+            weatherTip='Wear warm clothes as it is snowing.';
+            break;
+        case 'Rain':
+            weatherTip='Carry an umbrella or raincoat as it is raining.';
+            break;
+        case 'Thunderstorm':
+            weatherTip='Stay safe when going outside in thunder.';
+            break;
+        case 'Cloudy':
+            weatherTip='Carry an umbrella or raincoat as it may rain.';
+            break;
+        case 'Sunny':
+            weatherTip='Wear lightweight and breathable clothing, carry caps or hats and sunglasses if required.';
+            break;
+        default:
+            if (uvin>5){weatherTip='High UV index, use sunscreen.'}
+            else{weatherTip='Good weather outside, enjoy!'};
+            break;
+    }
 
+    conditionElement.innerText=weatherCondition;
     cimgElement.style.backgroundImage=conditionImage;
-}
+    weatherTipValueElement.innerText=weatherTip;
+    }
