@@ -8,6 +8,8 @@
     <title>Skies</title>
     <link rel="icon" type="image/svg+xml" href="images/icon.svg">
     <link rel="stylesheet" href="css.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 <body>
     <header id="header" class="darkModeElement">
@@ -94,7 +96,7 @@
                 <div id="MapContainer" class="section" style="width:80%;margin:10% 0% 10% 0%;padding:10%;">
                     <div id="MapLabel" style="font-weight:bold;">Map</div>
                     <div id="mapLoading" style="padding-top:5%;line-height:1.5;">Loading...</div>
-                    <div id="map"></div>
+                    <div style="height:auto;width:auto;display:flex;justify-content:center;"><div id="map"></div></div>
                 </div>
             </div>
         </div>

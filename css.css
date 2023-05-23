@@ -26,6 +26,7 @@ header{height:10vh;font-weight:bold;flex-direction:row;box-shadow:0vw -5vw 7vw 0
 .darkModeEnable{color:white;background-color:#1e1e1e;}
 #defaultLocationOptionItem{padding:3% 2% 3% 2%;border-radius:2vw;}
 .double-section{display:flex;flex-direction:column;width:70%;}
+#map{height:39vh;width:39vh;border-radius:30vw;box-shadow:inset 0vw 0vw 2vw 2vw #ffffff;}
 
 @media only screen and (min-width:700px) {
     html{font-size:2vw;}
@@ -37,6 +38,7 @@ header{height:10vh;font-weight:bold;flex-direction:row;box-shadow:0vw -5vw 7vw 0
     #darkModeButton{padding:2%;font-size:2vw;}
     .cityInput-locationOptions-complex{width:28%;}
     .double-section{width:40%;}
+    #map{height:33vh;width:33vh;}
 }
 
 @media only screen and (min-width:1000px) {
@@ -46,4 +48,5 @@ header{height:10vh;font-weight:bold;flex-direction:row;box-shadow:0vw -5vw 7vw 0
     #cityInput,#getWeatherButton{padding:3% 5% 3% 5%;}
     #getWeatherButton{margin:0;padding:1%;}
     #darkModeButton{padding:2%;font-size:1.5vw;}
+    #map{height:45vh;width:45vh;}
 }

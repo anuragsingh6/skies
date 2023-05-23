@@ -126,17 +126,27 @@ async function getAQI(){let yyyy=new Date().getFullYear();let mm='0'+(new Date()
 }
 
 async function loadMap(){
-    document.getElementById('map').innerHTML='<iframe id="mapFrame" width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=76.78070068359376%2C28.445147699510212%2C77.54699707031251%2C28.830839320444266&amp;layer=mapnik" style="border: 1px solid black"></iframe>';
+    // document.getElementById('map').innerHTML='<iframe id="mapFrame" width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=76.78070068359376%2C28.445147699510212%2C77.54699707031251%2C28.830839320444266&amp;layer=mapnik" style="border: 1px solid black"></iframe>';
+    // let mapElement=document.getElementById('map');
+    // map.style.backgroundColor='green';
+    let zoom=7;
+    let map = L.map('map').setView([latitude,longitude],13);
+    L.tileLayer('https://tile.openstreetmap.org/'+zoom+'/'+latitude.toFixed()+'/'+longitude.toFixed()+'.png',{
+        noWrap:true,maxZoom:19,attribution:'&copy; OpenstreetMap'
+    }).addTo(map);
+    document.getElementsByClassName('leaflet-control-container')[0].remove();
+    console.log(map);
+
 }
 
 function editMap(){
     document.getElementById('mapLoading').style.display='none';
-    let mapFrame=document.getElementById('mapFrame');
-    mapFrame.style.border='none';mapFrame.style.borderRadius='100vw';
+    // let mapFrame=document.getElementById('mapFrame');
+    // mapFrame.style.border='none';mapFrame.style.borderRadius='100vw';
     // if (document.getElementsByClassName('leaflet-control-container').length!==0)
-    let mapDocument=mapFrame.contentDocument || mapFrame.contentWindow.document;
+    // let mapDocument=mapFrame.contentDocument || mapFrame.contentWindow.document;
     // console.log(mapFrame.contentDocument || mapFrame.contentWindow.document);
-    mapDocument.getElementsByClassName('leaflet-control-container')[0].remove();
+    // mapDocument.getElementsByClassName('leaflet-control-container')[0].remove();
     console.log('editMap called');
 }
 
