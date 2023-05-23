@@ -129,13 +129,11 @@ async function loadMap(){
     // document.getElementById('map').innerHTML='<iframe id="mapFrame" width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=76.78070068359376%2C28.445147699510212%2C77.54699707031251%2C28.830839320444266&amp;layer=mapnik" style="border: 1px solid black"></iframe>';
     // let mapElement=document.getElementById('map');
     // map.style.backgroundColor='green';
-    let zoom=7;
-    let map = L.map('map').setView([latitude,longitude],13);
-    L.tileLayer('https://tile.openstreetmap.org/'+zoom+'/'+latitude.toFixed()+'/'+longitude.toFixed()+'.png',{
-        noWrap:true,maxZoom:19,attribution:'&copy; OpenstreetMap'
+    let map = L.map('map').setView([latitude,longitude],10);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{y}/{x}.png',{
+        maxZoom:19,attribution:'&copy; OpenstreetMap'
     }).addTo(map);
     document.getElementsByClassName('leaflet-control-container')[0].remove();
-    console.log(map);
 
 }
 
