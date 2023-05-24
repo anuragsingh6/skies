@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <header id="header" class="darkModeElement">
@@ -32,7 +33,7 @@
         <div class="container">
             <div class="cityNameContainer">
                 <span id="cityName"></span>
-                <button type="button" class="darkModeElement" onclick="()=>{getWeather();getAQI();}" style="margin-left:5%;font-size:inherit;background-color:#87878711;border:none;border-radius:20vw;">&#8635;</button>
+                <button type="button" class="darkModeElement" onclick="reloadWeather()" style="margin-left:5%;font-size:inherit;background-color:#87878711;border:none;border-radius:20vw;">&#8635;</button>
             </div>
         </div>
         <div class="container">
@@ -95,22 +96,20 @@
                 </div>
                 <div id="MapContainer" class="section" style="width:80%;margin:10% 0% 10% 0%;padding:10%;">
                     <div id="MapLabel" style="font-weight:bold;">Map</div>
-                    <div id="mapLoading" style="padding-top:5%;line-height:1.5;">Loading...</div>
+                    <div id="mapLoading" style="padding-top:5%;line-height:1.5;display:block;">Loading...</div>
                     <div style="height:auto;width:auto;display:flex;justify-content:center;"><div id="map"></div></div>
                 </div>
             </div>
         </div>
         <div class="container">
-            <div id="Graph" class="section" style="width:75%;">
-                <div class="graph-container">
-                    
+            <div id="Graph" class="section" style="height:30vh;width:75%;">
+                <div class="graph-container" style="height:100%;width:100%;">
+                    <div id="graphStatus"></div>
+                    <canvas id="weatherGraph" style="height:100%;width:100%;aspect-ratio:auto;"></canvas>
                 </div>
             </div>
         </div>
     </div>
-
-
-
     <script type="text/javascript" src="js.js"></script>
 </body>
 </html>

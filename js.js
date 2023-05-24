@@ -23,7 +23,7 @@ function darkModeToggle(){
     }
 }
 let longitude=77.25; let latitude=28.625;
-let possibleLocations=[];
+let possibleLocations=[];let place;
 function searchLocation(){
     let query=cityInput.value;
     // let searchURL='https://photon.komoot.io/api/?q='+query+'&layer=city&limit=10';
@@ -38,13 +38,6 @@ function searchLocation(){
         for (let i=0;i<possibleLocations.length;i++){
             let newLocationOptionItem=document.createElement('div');
             let newLocationOptionItemText=placeLabelCreator(possibleLocations[i]);
-            // if (!(possibleLocations[i].properties.hasOwnProperty('county'))&&!(possibleLocations[i].properties.hasOwnProperty('state'))){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.country;}
-            // else{
-            // if ((possibleLocations[i].properties.hasOwnProperty('county'))&&(possibleLocations[i].properties.hasOwnProperty('state'))){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.state+', '+possibleLocations[i].properties.country;}
-            // else if ((possibleLocations[i].properties.county===undefined)){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.city+', '+possibleLocations[i].properties.state+', '+possibleLocations[i].properties.country;}
-            // else if ((possibleLocations[i].properties.state===undefined)){newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.city+', '+possibleLocations[i].properties.county+', '+possibleLocations[i].properties.country;}
-            // else{newLocationOptionItemText=possibleLocations[i].properties.name+' '+possibleLocations[i].properties.osm_value.replace(possibleLocations[i].properties.osm_value.charAt(0),possibleLocations[i].properties.osm_value.charAt(0).toUpperCase())+', '+possibleLocations[i].properties.city+', '+possibleLocations[i].properties.county+', '+possibleLocations[i].properties.state+', '+possibleLocations[i].properties.country;}
-            // }
             newLocationOptionItem.className='locationOptionItem';newLocationOptionItem.id='locationOptionItem'+i;newLocationOptionItem.innerText=newLocationOptionItemText;
             newLocationOptionItem.addEventListener('click', locationItemClicked);otherLocationOptions.appendChild(newLocationOptionItem);
             }
@@ -66,8 +59,9 @@ function locationItemClicked(){console.log(this.innerText);
     if (this.innerText!==undefined){cityInput.value=this.innerText;};
     longitude=possibleLocations[this.id.charAt(18)].geometry.coordinates[0];
     latitude=possibleLocations[this.id.charAt(18)].geometry.coordinates[1];
-    console.log(this.id, latitude,longitude);
+    // console.log(this.id,typeof(this.id),this.id.charAt(18), latitude,longitude);
     city=this.innerText;
+    place=possibleLocations[new Number(this.id.charAt(18))];console.log(place);
 }
 
 function hideElement(element){element.style.visibility='hidden';element.style.display='none';}
@@ -79,25 +73,23 @@ let defaultLocationOptionItem=document.getElementById('defaultLocationOptionItem
 function openLocationOptionsDialog(){showElement(locationOptions);showElement(defaultLocationOptionItem);
     if (cityInput.value===''){defaultLocationOptionItem.innerText='Start typing to search for locations';}
     else{defaultLocationOptionItem.innerText='Loading...';}
-    // else if ((cityInput.value!=='')&&(possibleLocations.length===0)){defaultLocationOptionItem.innerText='Loading...';}
 }
 cityInput.addEventListener('focus',()=>{searchLocation();});
 cityInput.addEventListener('keyup',()=>{searchLocation();});
-// cityInput.addEventListener('focusout',()=>{locationItemClicked();});
 
 addEventListener('click', e=>{if ((e.target!==cityInput)){hideElement(locationOptions)}else{showElement(locationOptions)}})
 
 let getWeatherButton=document.getElementById('getWeatherButton');let weather;
-function getWeatherButtonClick(){if (cityInput.value!==''){getWeather();getAQI();}else{alert('No location selected to get weather for.')}}
+function getWeatherButtonClick(){if (cityInput.value!==''){getWeather();getAQI();updateMap();}else{alert('No location selected to get weather for.')}}
+function reloadWeather(){getWeather();getAQI();}
 
-async function getWeather(){
+async function getWeather(){console.log('getWeather called');
     let weatherURL='https://api.open-meteo.com/v1/forecast?latitude='+latitude+'&longitude='+longitude+'&current_weather=true&hourly=temperature_2m,precipitation,windspeed_80m,cloudcover,snowfall,rain,visibility&daily=temperature_2m_max,temperature_2m_min,uv_index_max&forecast_days=1&timezone=auto';
     try{
         let response=await fetch(weatherURL);
         weather=await response.json();
 
         console.log('WEATHER DATA:', weather);cityName.innerText=city;
-        // temp=weather.hourly.temperature_2m[new Date().getHours()].toFixed(1);
         temp=weather.current_weather.temperature;
         minTemp=weather.daily.temperature_2m_min[0].toFixed(1);
         maxTemp=weather.daily.temperature_2m_max[0].toFixed(1);
@@ -106,15 +98,18 @@ async function getWeather(){
         snow=weather.hourly.snowfall[new Date().getHours()].toFixed(1);
         visibility=(weather.hourly.visibility[new Date().getHours()]/1000).toFixed(1);
         cloud=weather.hourly.cloudcover[new Date().getHours()].toFixed(1);
-        // wind=weather.hourly.windspeed_80m[new Date().getHours()].toFixed(1);
         wind=weather.current_weather.windspeed;
         uvin=weather.daily.uv_index_max;
-        updateWeather();updateWeatherStatus();console.log('unit:', unit);if (unit==='F'){formatTempInF();};
+        console.log('unit:', unit);if (unit==='F'){formatTempInF();};updateWeather();updateWeatherStatus();
     }
     catch{console.error('Error loading weather data. Please try again.');conditionElement.innerText='Error. Try searching for your location or reload.';weatherTipValueElement.innerText='Error. Try searching for your location or reload.';}
+    
+    let graphStatusElement=document.getElementById('graphStatus');
+    try{if (graphCreated){updateGraph();}else{createGraph();};graphStatusElement.style.display='none';}
+    catch{console.error('Error drawing graph. Please try again.');graphStatusElement.innerText='Error drawing graph.';graphStatusElement.style.display='block';}
 }
 
-async function getAQI(){let yyyy=new Date().getFullYear();let mm='0'+(new Date().getMonth()+1);let dd=new Date().getDate();
+async function getAQI(){console.log('getAQI called');let yyyy=new Date().getFullYear();let mm='0'+(new Date().getMonth()+1);let dd=new Date().getDate();
     let aqiURL='https://air-quality-api.open-meteo.com/v1/air-quality?latitude='+latitude+'&longitude='+longitude+'&hourly=european_aqi&start_date='+yyyy+'-'+mm+'-'+dd+'&end_date='+yyyy+'-'+mm+'-'+dd;
     try{
         let aqiString=await fetch(aqiURL);let aqiData=await aqiString.json();console.log('AQI DATA:', aqiData);
@@ -125,42 +120,36 @@ async function getAQI(){let yyyy=new Date().getFullYear();let mm='0'+(new Date()
     catch{console.error('Error loading AQI data. Please try again.');}
 }
 
-async function loadMap(){
-    // document.getElementById('map').innerHTML='<iframe id="mapFrame" width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=76.78070068359376%2C28.445147699510212%2C77.54699707031251%2C28.830839320444266&amp;layer=mapnik" style="border: 1px solid black"></iframe>';
-    // let mapElement=document.getElementById('map');
-    // map.style.backgroundColor='green';
-    let map = L.map('map').setView([latitude,longitude],10);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{y}/{x}.png',{
-        maxZoom:19,attribution:'&copy; OpenstreetMap'
-    }).addTo(map);
+let map;let mapLoadingElement=document.getElementById('mapLoading');
+async function loadMap(){console.log('loadMap called');
+    try{map = L.map('map').setView([latitude,longitude-0.04],9);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(map);
     document.getElementsByClassName('leaflet-control-container')[0].remove();
-
+    }
+    catch{console.log("Error loading map:", err)}
 }
-
-function editMap(){
-    document.getElementById('mapLoading').style.display='none';
-    // let mapFrame=document.getElementById('mapFrame');
-    // mapFrame.style.border='none';mapFrame.style.borderRadius='100vw';
-    // if (document.getElementsByClassName('leaflet-control-container').length!==0)
-    // let mapDocument=mapFrame.contentDocument || mapFrame.contentWindow.document;
-    // console.log(mapFrame.contentDocument || mapFrame.contentWindow.document);
-    // mapDocument.getElementsByClassName('leaflet-control-container')[0].remove();
-    console.log('editMap called');
-}
+function updateMap(){console.log('updateMap called');
+    mapLoadingElement.style.display='block';
+    setInterval(()=>{mapLoadingElement.style.display='none';},3000);
+    let zoomLevel=9;
+    if (place.properties.osm_value==='country'){zoomLevel=4;}
+    else if ((place.properties.osm_value==='state')||(place.properties.osm_value==='county')){zoomLevel=6;}
+    else if(place.properties.osm_value==='city'){zoomLevel=9;}
+    else{zoomLevel=12;}
+    map.flyTo([latitude,longitude],zoomLevel,{animation:true});}
 
 getWeather();
 getAQI();
 loadMap();
 
-window.onload = () => {editMap();};
-
+window.onload = () => {mapLoadingElement.style.display='none';};//if (weather){createGraph();}else{graphElement.innerHTML="<span>Error while displaying graph.</span>"}};
 
 let city='New Delhi City, Delhi, India';
 let cityName=document.getElementById('cityName');cityName.innerText=city;
 
 let unit='C';
 let temp=0;let minTemp=0;let maxTemp=0;let prec=0;let rain=0;let snow=0;let wind=0;let visibility=0;let cloud=0;let uvin=0;let aqi=0;let aqiCondition='';
-let conditionImages={'Sunny':'url(images/sunny.svg)','Partly Cloudy':'url(images/icon.svg)','Cloudy':'url(images/cloudy.svg)','Rain':'url(images/rain.svg)','Snow':'url(images/snow.svg)','Windy':'url(images/windy.svg)','Clear Night':'url(images/night_clear.svg)','Partly Cloudy Night':'url(images/night_partly_cloudy.svg)','Thunder':'url(images/thunder.svg)'};
+let conditionImages={'Sunny':'url(images/sunny.svg)','Partly Cloudy':'url(images/icon.svg)','Cloudy':'url(images/cloudy.svg)','Rain':'url(images/rain.svg)','Snow':'url(images/snow.svg)','Windy':'url(images/windy.svg)','Clear Night':'url(images/night_clear.svg)','Partly Cloudy Night':'url(images/night_partly_cloudy.svg)','Thunder':'url(images/thunder.svg)','Fog':'url(images/fog.svg)'};
 let conditionImage=conditionImages['Partly Cloudy'];
 let weatherCondition='';let weatherTip='';
 let tempElement=document.getElementById('temp');
@@ -221,7 +210,7 @@ function updateWeatherStatus(){
             break;
         case 45:
         case 48:
-            weatherCondition='Fog';conditionImage=conditionImages['Cloudy'];
+            weatherCondition='Fog';conditionImage=conditionImages['Fog'];
             break;
         case 51:
         case 53:
@@ -252,7 +241,7 @@ function updateWeatherStatus(){
             break;
         case 95:
         case 96:
-        case 97:
+        case 99:
             weatherCondition='Thunderstorm';conditionImage=conditionImages['Thunder'];
             break;
         default:
@@ -265,6 +254,8 @@ function updateWeatherStatus(){
             weatherTip='Wear warm clothes as it is snowing.';
             break;
         case 'Rain':
+        case 'Rain (Drizzle)':
+        case 'Rain (Showers)':
             weatherTip='Carry an umbrella or raincoat as it is raining.';
             break;
         case 'Thunderstorm':
@@ -272,6 +263,9 @@ function updateWeatherStatus(){
             break;
         case 'Cloudy':
             weatherTip='Carry an umbrella or raincoat as it may rain.';
+            break;
+        case 'Fog':
+            weatherTip='Be safe ouside especially if driving in fog.';
             break;
         case 'Sunny':
             weatherTip='Wear lightweight and breathable clothing, carry caps or hats and sunglasses if required.';
@@ -287,3 +281,21 @@ function updateWeatherStatus(){
     cimgElement.style.backgroundImage=conditionImage;
     weatherTipValueElement.innerText=weatherTip;
     }
+
+let graphElement=document.getElementById('weatherGraph');let weatherGraph;
+let timeData=[];let graphDataSets=[];let graphCreated=0;
+function generateGraphData(){timeData=[];graphDataSets=[];
+    let dataset={label:'',data:[],borderwidth:1};
+    let dataSetKeys=['Temperature','Maximum Temperature','Minimum Temperature','Precipitation','Rain','Snow'];
+    let dataSetValues=[weather.hourly.temperature_2m,weather.daily.temperature_2m_max,weather.daily.temperature_2m_min,weather.hourly.precipitation,weather.hourly.rain,weather.hourly.snow];
+    for (let i=0;i<weather.hourly.time.length;i++){timeData.push(weather.hourly.time[i].substring(11))};
+    for (let i=0;i<dataSetKeys.length;i++){dataset.label=dataSetKeys[i];dataset.data=dataSetValues[i];
+        graphDataSets.push(dataset);dataset={label:'',data:[],borderwidth:1};
+    }
+}
+
+function createGraph(){graphCreated=1;generateGraphData();
+    weatherGraph=new Chart(graphElement, {type:'line',data:{labels:timeData,datasets:graphDataSets},options:{responsive:true,maintainAspectRatio:false}});
+}
+
+function updateGraph(){generateGraphData();weatherGraph.data.labels=timeData;weatherGraph.data.datasets=graphDataSets;weatherGraph.update();}
