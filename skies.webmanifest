@@ -1,0 +1,16 @@
+{
+    "name":"Skies Weather App",
+    "short_name":"Skies",
+    "description":"Skies is a weather app that lets you know of real-time weather all around the world.",
+    "icons":[
+        {
+            "src":"images/icon.svg",
+            "type":"image/svg+xml",
+            "sizes":"48x48 72x72 96x96 128x128 150x150 256x256 512x512 1024x1024"
+        }
+    ],
+    "start_url":"index.html",
+    "display":"fullscreen",
+    "theme_color":"#ffffff",
+    "background_color":"#ffffff"
+}
