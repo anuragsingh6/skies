@@ -1,4 +1,4 @@
-# skies <img src='https://raw.githubusercontent.com/anuragsingh6/skies/e1c4ad993671c4a90d553a4e1da2e6a0907f7297/images/icon.svg' height='60px' width='90px'>
+# skies <img src='https://raw.githubusercontent.com/anuragsingh6/skies/e1c4ad993671c4a90d553a4e1da2e6a0907f7297/images/icon.svg' height='50px' width='90px'>
 **[skies](https://anuragsingh6.github.io/skies)** is a weather app.
 
 It lets you know of your local current weather and current weather all around the world as well.
@@ -9,6 +9,9 @@ It lets you know of your local current weather and current weather all around th
 - [OpenStreetMap](https://github.com/openstreetmap/) for searching locations and map
 - [Leaflet](https://github.com/Leaflet/Leaflet) for displaying map
 - [Chart.js](https://github.com/chartjs/Chart.js) for displaying weather graph
+
+# Bug Reporting
+If you found any bugs or errors or any kind of unexpected behavior in the app, in correct working conditions(good internet connectivity, etc), please report the bug by opening an issue. It would be much appreciated!
 
 # Use the App
 [Check out skies in action here](https://anuragsingh6.github.io/skies)
