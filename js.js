@@ -106,7 +106,7 @@ async function getWeather(){console.log('getWeather called');
     
     let graphStatusElement=document.getElementById('graphStatus');
     try{if (graphCreated){updateGraph();}else{createGraph();};graphStatusElement.style.display='none';}
-    catch{console.error('Error drawing graph. Please try again.');graphStatusElement.innerText='Error drawing graph.';graphStatusElement.style.display='block';}
+    catch{console.error('Error drawing graph. Please reload page.');graphStatusElement.innerText='Error drawing graph. Please reload page.';graphStatusElement.style.display='block';}
 }
 
 async function getAQI(){console.log('getAQI called');let yyyy=new Date().getFullYear();let mm='0'+(new Date().getMonth()+1);let dd=new Date().getDate();
@@ -132,7 +132,8 @@ function updateMap(){console.log('updateMap called');
     mapLoadingElement.style.display='block';
     setInterval(()=>{mapLoadingElement.style.display='none';},3000);
     let zoomLevel=9;
-    if (place.properties.osm_value==='country'){zoomLevel=4;}
+    if (place.properties.osm_value==='continent'){zoomLevel=2;}
+    else if (place.properties.osm_value==='country'){zoomLevel=4;}
     else if ((place.properties.osm_value==='state')||(place.properties.osm_value==='county')){zoomLevel=6;}
     else if(place.properties.osm_value==='city'){zoomLevel=9;}
     else{zoomLevel=12;}
@@ -195,58 +196,61 @@ function updateWeather(){
 }
 
 function updateWeatherStatus(){
-    switch (weather.current_weather.weathercode) {
-        case 0:
-        case 1:
-            if (weather.current_weather.is_day===1){weatherCondition='Sunny';conditionImage=conditionImages['Sunny'];}
-            else{weatherCondition='Clear Sky';conditionImage=conditionImages['Clear Night'];}
-            break;
-        case 2:
-            if (weather.current_weather.is_day===1){weatherCondition='Partly Cloudy';conditionImage=conditionImages['Partly Cloudy'];}
-            else{weatherCondition='Partly Cloudy';conditionImage=conditionImages['Partly Cloudy Night'];}
-            break;
-        case 3:
-            weatherCondition='Cloudy';conditionImage=conditionImages['Cloudy'];
-            break;
-        case 45:
-        case 48:
-            weatherCondition='Fog';conditionImage=conditionImages['Fog'];
-            break;
-        case 51:
-        case 53:
-        case 55:
-        case 56:
-        case 57:
-            weatherCondition='Rain (Drizzle)';conditionImage=conditionImages['Rain'];
-            break;
-        case 61:
-        case 63:
-        case 65:
-        case 66:
-        case 67:
-            weatherCondition='Rain';conditionImage=conditionImages['Rain'];
-            break;
-        case 80:
-        case 81:
-        case 82:
-            weatherCondition='Rain (Showers)';conditionImage=conditionImages['Rain'];
-            break;
-        case 71:
-        case 73:
-        case 75:
-        case 77:
-        case 85:
-        case 86:
-            weatherCondition='Snow';conditionImage=conditionImages['Snow'];
-            break;
-        case 95:
-        case 96:
-        case 99:
-            weatherCondition='Thunderstorm';conditionImage=conditionImages['Thunder'];
-            break;
-        default:
-            if (wind>15){weatherCondition='Windy';conditionImage=conditionImages['Windy'];}
-            break;
+    if (wind>15){weatherCondition='Windy';conditionImage=conditionImages['Windy'];}
+    else{
+        switch (weather.current_weather.weathercode) {
+            case 0:
+            case 1:
+                if (weather.current_weather.is_day===1){weatherCondition='Sunny';conditionImage=conditionImages['Sunny'];}
+                else{weatherCondition='Clear Sky';conditionImage=conditionImages['Clear Night'];}
+                break;
+            case 2:
+                if (weather.current_weather.is_day===1){weatherCondition='Partly Cloudy';conditionImage=conditionImages['Partly Cloudy'];}
+                else{weatherCondition='Partly Cloudy';conditionImage=conditionImages['Partly Cloudy Night'];}
+                break;
+            case 3:
+                weatherCondition='Cloudy';conditionImage=conditionImages['Cloudy'];
+                break;
+            case 45:
+            case 48:
+                weatherCondition='Fog';conditionImage=conditionImages['Fog'];
+                break;
+            case 51:
+            case 53:
+            case 55:
+            case 56:
+            case 57:
+                weatherCondition='Rain (Drizzle)';conditionImage=conditionImages['Rain'];
+                break;
+            case 61:
+            case 63:
+            case 65:
+            case 66:
+            case 67:
+                weatherCondition='Rain';conditionImage=conditionImages['Rain'];
+                break;
+            case 80:
+            case 81:
+            case 82:
+                weatherCondition='Rain (Showers)';conditionImage=conditionImages['Rain'];
+                break;
+            case 71:
+            case 73:
+            case 75:
+            case 77:
+            case 85:
+            case 86:
+                weatherCondition='Snow';conditionImage=conditionImages['Snow'];
+                break;
+            case 95:
+            case 96:
+            case 99:
+                weatherCondition='Thunderstorm';conditionImage=conditionImages['Thunder'];
+                break;
+            default:
+                if (wind>15){weatherCondition='Windy';conditionImage=conditionImages['Windy'];}
+                break;
+        }
     }
 
     switch (weatherCondition) {
@@ -256,19 +260,22 @@ function updateWeatherStatus(){
         case 'Rain':
         case 'Rain (Drizzle)':
         case 'Rain (Showers)':
-            weatherTip='Carry an umbrella or raincoat as it is raining.';
+            weatherTip='Carry an umbrella or raincoat when going outside as it is raining.';
             break;
         case 'Thunderstorm':
             weatherTip='Stay safe when going outside in thunder.';
             break;
         case 'Cloudy':
-            weatherTip='Carry an umbrella or raincoat as it may rain.';
+            weatherTip='Carry an umbrella or raincoat when going outside as it may rain.';
             break;
         case 'Fog':
             weatherTip='Be safe ouside especially if driving in fog.';
             break;
         case 'Sunny':
             weatherTip='Wear lightweight and breathable clothing, carry caps or hats and sunglasses if required.';
+            break;
+        case 'Windy':
+            weatherTip='Be safe outside as it is windy';
             break;
         default:
             if (uvin>5){weatherTip='High UV index, use sunscreen.'}
