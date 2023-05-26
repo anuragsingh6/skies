@@ -26,8 +26,8 @@
      inkscape:document-units="px"
      showgrid="false"
      inkscape:zoom="1.0529882"
-     inkscape:cx="220.32535"
-     inkscape:cy="188.98597"
+     inkscape:cx="152.8982"
+     inkscape:cy="155.74723"
      inkscape:window-width="1366"
      inkscape:window-height="745"
      inkscape:window-x="-8"
@@ -45,7 +45,7 @@
        y1="41.931072"
        x2="109.4472"
        y2="24.519016"
-       gradientTransform="translate(-19.599122,130.6483)" />
+       gradientTransform="matrix(1.5114503,0,0,1.5114503,-70.023727,114.0173)" />
     <linearGradient
        inkscape:collect="always"
        id="linearGradient630">
@@ -65,10 +65,10 @@
      id="layer1"
      transform="translate(-46.842556,-134.17766)">
     <circle
-       style="fill:url(#linearGradient716);fill-opacity:1;stroke:none;stroke-width:0.0661458;stroke-linecap:round;stroke-linejoin:round;paint-order:fill markers stroke"
+       style="fill:url(#linearGradient716);fill-opacity:1;stroke:none;stroke-width:0.099976;stroke-linecap:round;stroke-linejoin:round;paint-order:fill markers stroke"
        id="path570-4"
-       cx="80.128204"
-       cy="166.39334"
-       r="16.668749" />
+       cx="80.709183"
+       cy="168.04416"
+       r="25.193985" />
   </g>
 </svg>
