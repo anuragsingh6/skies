@@ -78,7 +78,7 @@ function openLocationOptionsDialog(){showElement(locationOptions);showElement(de
     if (cityInput.value===''){defaultLocationOptionItem.innerText='Start typing to search for locations';}
     else{defaultLocationOptionItem.innerText='Loading...';}
 };
-cityInput.addEventListener('focus',searchLocation());
+cityInput.addEventListener('focus',searchLocation);
 
 // Handling displaying of matching places list depending on whether or not searchbar(cityInput) has focus or not
 addEventListener('click', e=>{if ((e.target!==cityInput)){hideElement(locationOptions)}else{showElement(locationOptions)}});
