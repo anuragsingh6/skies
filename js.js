@@ -58,7 +58,7 @@ function placeLabelCreator(place){
 };
 
 // Function that handles when a ceratin matching place is selected
-function locationItemClicked(){console.log(this.innerText);
+function locationItemClicked(){console.log("\n",this.innerText);
     if (this.innerText!==undefined){cityInput.value=this.innerText;};
     longitude=possibleLocations[this.id.charAt(18)].geometry.coordinates[0];
     latitude=possibleLocations[this.id.charAt(18)].geometry.coordinates[1];
@@ -115,7 +115,10 @@ async function getWeather(){
 };
 
 // Function that handles fetching aqi data from open-meteo api and displaying it
-async function getAQI(){let yyyy=new Date().getFullYear();let mm='0'+(new Date().getMonth()+1);let dd=new Date().getDate();
+async function getAQI(){
+    let yyyy=new Date().getFullYear().toString();
+    let mm='0'+(new Date().getMonth()+1).toString();if (mm.length===1){mm='0'+mm};
+    let dd=new Date().getDate().toString();if (dd.length===1){dd='0'+dd};
     let aqiURL='https://air-quality-api.open-meteo.com/v1/air-quality?latitude='+latitude+'&longitude='+longitude+'&hourly=european_aqi&start_date='+yyyy+'-'+mm+'-'+dd+'&end_date='+yyyy+'-'+mm+'-'+dd;
     try{
         let aqiString=await fetch(aqiURL);let aqiData=await aqiString.json();console.log('AQI DATA:', aqiData);
@@ -140,14 +143,14 @@ async function loadMap(){
 };
 
 // Function that handles updating map when a new place is selected to see weather
-function updateMap(){console.log('updateMap called');
+function updateMap(){//console.log('updateMap called');
     mapLoadingElement.style.display='block';
     setInterval(()=>{mapLoadingElement.style.display='none';},3000);
     let zoomLevel=9;
     if (place.properties.osm_value==='continent'){zoomLevel=2;}
     else if (place.properties.osm_value==='country'){zoomLevel=4;}
     else if ((place.properties.osm_value==='state')||(place.properties.osm_value==='county')){zoomLevel=6;}
-    else if(place.properties.osm_value==='city'){zoomLevel=9;}
+    else if((place.properties.osm_value==='city')||(place.properties.osm_value==='administrative')){zoomLevel=9;}
     else{zoomLevel=12;}
     map.flyTo([latitude,longitude],zoomLevel,{animation:true});};
 
@@ -168,6 +171,7 @@ let uvinElement=document.getElementById('uvin');let aqiElement=document.getEleme
 let aqiColorElement=document.getElementById('aqiColor');let aqiColor='transparent';
 let weatherTipValueElement=document.getElementById('weatherTipValue');
 
+console.log("\n",city);
 updateWeather();
 
 // Functions that handle converting passed temperature from celsius to fahrenheit and vice versa
