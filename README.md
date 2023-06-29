@@ -1,4 +1,4 @@
-# [skies <img src='https://raw.githubusercontent.com/anuragsingh6/skies/e1c4ad993671c4a90d553a4e1da2e6a0907f7297/images/icon.svg' height='50px' width='90px'>](https://anuragsingh6.github.io/skies)
+# [Skies <img src='https://raw.githubusercontent.com/anuragsingh6/skies/e1c4ad993671c4a90d553a4e1da2e6a0907f7297/images/icon.svg' height='50px' width='90px'>](https://anuragsingh6.github.io/skies)
 **[skies](https://anuragsingh6.github.io/skies)** is a weather app.
 
 It lets you know of your local current and daily weather and current and daily weather all around the world as well.
